@@ -16,12 +16,14 @@ public class DisplayMessageActivity extends ActionBarActivity {
 
         // Get the message from the intent
         Intent intent = getIntent();
-        String message = intent.getStringExtra(MyActivity.EXTRA_MESSAGE);
+
+        String message2 = intent.getStringExtra(MyActivity.EXTRA_DATA);
+
 
         // Create the text view
         TextView textView = new TextView(this);
         textView.setTextSize(40);
-        textView.setText(message);
+        textView.setText("Data scelta:   " + message2);
 
         // Set the text view as the activity layout
         setContentView(textView);

@@ -6,17 +6,37 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CalendarView;
 import android.widget.EditText;
+import android.widget.TextView;
 
 
 public class MyActivity extends ActionBarActivity {
 
-    public final static String EXTRA_MESSAGE = "com.mycompany.myfirstapp.MESSAGE";
+    public final static String EXTRA_DATA = "com.mycompany.myfirstapp.DATA";
+
+    String curDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my);
+
+        CalendarView calendarView = (CalendarView) findViewById(R.id.calendarView);
+        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+
+            @Override
+            public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
+
+                // Stringo la data
+                curDate = String.format("%d/%d/%d", dayOfMonth, month, year);
+
+                // Scrivo la data sulla label
+                TextView textView = (TextView) findViewById(R.id.selected_message);
+                textView.setTextSize(40);
+                textView.setText(curDate);
+            }
+        });
     }
 
     @Override
@@ -41,13 +61,15 @@ public class MyActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
+
     /** Called when the user clicks the Send button */
     public void sendMessage(View view) {
         Intent intent = new Intent(this, DisplayMessageActivity.class);
-        EditText editText = (EditText) findViewById(R.id.edit_message);
 
-        String message = editText.getText().toString();
-        intent.putExtra(EXTRA_MESSAGE, message);
+
+
+        intent.putExtra(EXTRA_DATA, curDate);
+
         startActivity(intent);
     }
 }
