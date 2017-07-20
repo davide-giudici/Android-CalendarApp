@@ -10,12 +10,16 @@ import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.text.ParseException;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+
 
 public class MyActivity extends ActionBarActivity {
 
+    public final static String EXTRA_WEEK = "com.mycompany.myfirstapp.WEEK";
     public final static String EXTRA_DATA = "com.mycompany.myfirstapp.DATA";
-
-    String curDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,20 +27,45 @@ public class MyActivity extends ActionBarActivity {
         setContentView(R.layout.activity_my);
 
         CalendarView calendarView = (CalendarView) findViewById(R.id.calendarView);
+        calendarView.setFirstDayOfWeek(Calendar.MONDAY);
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
 
             @Override
             public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
 
-                // Stringo la data
-                curDate = String.format("%d/%d/%d", dayOfMonth, month, year);
-
-                // Scrivo la data sulla label
-                TextView textView = (TextView) findViewById(R.id.selected_message);
-                textView.setTextSize(40);
-                textView.setText(curDate);
+                month++;
+                showTurno(dayOfMonth, month, year);
             }
         });
+
+
+        showTurnoToday();
+    }
+
+    private void showTurnoToday() {
+        Calendar c = Calendar.getInstance(Locale.ITALY);
+        Date d = new Date();
+        c.setTime(d);
+        showTurno(c.get(Calendar.DAY_OF_MONTH), c.get(Calendar.MONTH) + 1, c.get(Calendar.YEAR));
+    }
+
+    private void showTurno(int day, int month, int year) {
+        try {
+            CalendarCalculator calc = new CalendarCalculator(day, month, year);
+            int week = calc.calcWeek();
+            int dayOfWeek = calc.getDayOfWeek();
+
+            DataAdapter data = new DataAdapter();
+            String result = data.getTurnoDescription(week, dayOfWeek);
+
+            // Scrivo la data sulla label
+            TextView textView = (TextView) findViewById(R.id.show_result);
+            textView.setTextSize(40);
+            textView.setText(result);
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -61,15 +90,4 @@ public class MyActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-
-    /** Called when the user clicks the Send button */
-    public void sendMessage(View view) {
-        Intent intent = new Intent(this, DisplayMessageActivity.class);
-
-
-
-        intent.putExtra(EXTRA_DATA, curDate);
-
-        startActivity(intent);
-    }
 }

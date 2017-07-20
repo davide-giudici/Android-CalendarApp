@@ -4,12 +4,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-
-    <TextView android:id="@+id/selected_message"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:hint="@string/start_message" />
-
     <CalendarView
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -17,11 +11,8 @@
         android:gravity="top"
         android:id="@+id/calendarView" />
 
-    <Button
-        android:layout_width="100dp"
+    <TextView android:id="@+id/show_result"
         android:layout_height="wrap_content"
-        android:layout_gravity="right"
-        android:text="@string/send" 
-        android:onClick="sendMessage" />
+        android:layout_width="match_parent" />
 
 </LinearLayout>
