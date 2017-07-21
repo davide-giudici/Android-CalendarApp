@@ -7,12 +7,12 @@ public class DataAdapter {
 
     private String NOTTE_CORTA = "00:00 - 08:30";
     private String NOTTE_LUNGA = "00:00 - 10:00";
-    private String POMERIGGIO = "10:00 - 18:00";
-    private String POME_TARDI = "14:00 - 20:30";
-    private String SERA = "18:00 - 00:00";
-    private String EQUIPE_MAT = "09:30 - 12:30";
-    private String GIORNO = "08:30 - 18:00";
-    private String NO_LAVORO = "CASA";
+    private String POMERIGGIO  = "10:00 - 18:00";
+    private String POME_TARDI  = "14:00 - 20:30";
+    private String SERA        = "18:00 - 00:00";
+    private String EQUIPE_MAT  = "09:30 - 12:30";
+    private String GIORNO      = "08:30 - 18:00";
+    private String NO_LAVORO   = "CASA";
 
     private String[][] turniFissi = new String[][]
     {

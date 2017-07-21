@@ -11,8 +11,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Locale;
 
 
@@ -21,10 +23,14 @@ public class MyActivity extends ActionBarActivity {
     public final static String EXTRA_WEEK = "com.mycompany.myfirstapp.WEEK";
     public final static String EXTRA_DATA = "com.mycompany.myfirstapp.DATA";
 
+    private CalendarCalculator shiftCalculator;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my);
+
+        shiftCalculator = new CalendarCalculator();
 
         CalendarView calendarView = (CalendarView) findViewById(R.id.calendarView);
         calendarView.setFirstDayOfWeek(Calendar.MONDAY);
@@ -32,40 +38,36 @@ public class MyActivity extends ActionBarActivity {
 
             @Override
             public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
-
-                month++;
-                showTurno(dayOfMonth, month, year);
+                
+                showWorkshift(dayOfMonth, month++, year);
             }
         });
 
 
-        showTurnoToday();
+        showTodayWorkshift();
     }
 
-    private void showTurnoToday() {
+    private void showTodayWorkshift() {
         Calendar c = Calendar.getInstance(Locale.ITALY);
         Date d = new Date();
         c.setTime(d);
-        showTurno(c.get(Calendar.DAY_OF_MONTH), c.get(Calendar.MONTH) + 1, c.get(Calendar.YEAR));
+        showWorkshift(c.get(Calendar.DAY_OF_MONTH), c.get(Calendar.MONTH) + 1, c.get(Calendar.YEAR));
     }
 
-    private void showTurno(int day, int month, int year) {
-        try {
-            CalendarCalculator calc = new CalendarCalculator(day, month, year);
-            int week = calc.calcWeek();
-            int dayOfWeek = calc.getDayOfWeek();
+    private void showWorkshift(Integer day, Integer month, Integer year) {
 
-            DataAdapter data = new DataAdapter();
-            String result = data.getTurnoDescription(week, dayOfWeek);
+        Date selectedDate = new GregorianCalendar(year, month, day).getTime();
 
-            // Scrivo la data sulla label
-            TextView textView = (TextView) findViewById(R.id.show_result);
-            textView.setTextSize(40);
-            textView.setText(result);
+        Integer week = shiftCalculator.calcWeek(selectedDate);
+        Integer dayOfWeek = shiftCalculator.getDayOfWeek(selectedDate);
 
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        DataAdapter data = new DataAdapter();
+        String result = data.getTurnoDescription(week, dayOfWeek);
+
+        // Scrivo la data sulla label
+        TextView textView = (TextView) findViewById(R.id.show_result);
+        textView.setTextSize(40);
+        textView.setText(result);
     }
 
     @Override
