@@ -39,7 +39,7 @@ public class MyActivity extends ActionBarActivity {
             @Override
             public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
                 
-                showWorkshift(dayOfMonth, month++, year);
+                showWorkshift(dayOfMonth, month, year);
             }
         });
 
@@ -51,7 +51,7 @@ public class MyActivity extends ActionBarActivity {
         Calendar c = Calendar.getInstance(Locale.ITALY);
         Date d = new Date();
         c.setTime(d);
-        showWorkshift(c.get(Calendar.DAY_OF_MONTH), c.get(Calendar.MONTH) + 1, c.get(Calendar.YEAR));
+        showWorkshift(c.get(Calendar.DAY_OF_MONTH), c.get(Calendar.MONTH), c.get(Calendar.YEAR));
     }
 
     private void showWorkshift(Integer day, Integer month, Integer year) {
